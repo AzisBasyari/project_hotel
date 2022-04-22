@@ -1,28 +1,49 @@
 @extends('layouts.master')
 
+@section('navbar')
+    @include('layouts.navbar')
+@endsection
+
 @section('content')
-<a href="{{ route('resepsionis.home') }}">
-    <button class="btn btn-primary mb-3">
-        Kembali
-    </button>
-</a>
-
-<form action="/resepsionis/checkin" method="get">
-    @csrf
-    <label for="search" class="form-label">Cari Berdasarkan Tanggal<span class="text-danger">*</span>, Nama Pemesan, Kamar,
-        dan Email</label>
-        <input type="text" class="form-control" id="search" name="search" placeholder="Cari" value="{{ request('search') }}">
-        <button type="submit" class="btn btn-primary rounded-pill px-4">
-            <img src="https://img.icons8.com/material-rounded/24/ffffff/search.png">
-        </button>
-        <a href="/resepsionis/checkin" role="button" class="btn btn-primary rounded-pill px-4">
-            <img src="https://img.icons8.com/material-rounded/24/ffffff/reset.png">
+    <div class="d-flex justify-content-between">
+        <a href="{{ route('resepsionis.home') }}">
+            <button class="btn btn-secondary mb-3 rounded-pill px-4 py-1">
+                Kembali
+            </button>
         </a>
-    </form>
-    <span class="text-danger">*Format pencarian berdasarkan tanggal adalah menggunakan angka, contoh: 2022-12-31 (Tahun-Bulan-Tanggal)</span>
+    </div>
 
-<table class="table table-primary">
-    <thead>
+
+
+    <div class="mb-3">
+        <form action="/resepsionis/checkin" method="get">
+            @csrf
+            <label for="search" class="form-label">Cari Berdasarkan Tanggal<span class="text-danger">*</span>, Nama
+                Pemesan, Kamar,
+                dan Email</label>
+            <div class="row">
+                <div class="col-5">
+                    <input type="text" class="form-control" id="search" name="search" placeholder="Cari"
+                        value="{{ request('search') }}">
+                </div>
+                <div class="col-2">
+                    <button type="submit" class="btn btn-secondary rounded-pill px-5">
+                        <img src="https://img.icons8.com/material-rounded/24/ffffff/search.png">
+                    </button>
+                </div>
+                <div class="col-1">
+                    <a href="/resepsionis/checkin" role="button" class="btn btn-secondary rounded-pill px-5">
+                        <img src="https://img.icons8.com/material-rounded/24/ffffff/reset.png">
+                    </a>
+                </div>
+            </div>
+            <span class="text-danger">*Format pencarian berdasarkan tanggal adalah menggunakan angka, contoh: 2022-12-31
+                (Tahun-Bulan-Tanggal)</span>
+        </form>
+    </div>
+
+    <table class="table table-secondary table-hover">
+        <thead class="table-dark">
         <tr>
             <th>No</th>
             <th>Nama Pemesan</th>
@@ -52,7 +73,7 @@
                 <form action="/reservasi/{{ $reservasi->id }}" method="post">
                     @csrf
                     @method('put')
-                    <button type="submit" class="btn btn-primary" name='status' value="checkout">
+                    <button type="submit" class="btn btn-secondary rounded-pill px-3 py-1" name='status' value="checkout">
                         Check Out
                     </button>
                 </form>

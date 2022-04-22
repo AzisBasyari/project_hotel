@@ -1,19 +1,32 @@
 @extends('layouts.master')
 
-@section('content')
-<a href="{{ route('admin.home') }}">
-    <button class="btn btn-primary mb-3">
-        Kembali
-    </button>
-</a>
+@section('navbar')
+    @include('layouts.navbar')
+@endsection
 
-<table class="table table-primary">
-    <thead>
+@section('content')
+<div class="d-flex justify-content-between">
+    <a href="{{ route('admin.home') }}">
+        <button class="btn btn-secondary mb-3 rounded-pill px-4 py-1">
+            Kembali
+        </button>
+    </a>
+
+    <a href="{{ route('fasilitas-hotel.create') }}">
+        <button class="btn btn-secondary mb-3 rounded-pill px-4 py-1">
+            Tambah Fasilitas Hotel
+        </button>
+    </a>
+</div>
+
+<table class="table table-secondary">
+    <thead class="table-dark">
         <tr>
             <th>No</th>
             <th>Foto</th>
             <th>Nama Fasilitas</th>
-            <th colspan="2">Aksi</th>
+            <th>Deskripsi</th>
+            <th colspan="2" class="text-center">Aksi</th>
         </tr>
     </thead>
     <tbody>
@@ -24,18 +37,19 @@
                 <img src="{{ asset('img/hotel/' . $fasilitas->foto) }}" alt="" width="100px">
             </td>
             <td>{{ $fasilitas->nama_fasilitas }}</td>
-            <td>
+            <td>{{ $fasilitas->deskripsi }}</td>
+            <td class="text-center">
                 <a href="/admin/fasilitas-hotel/{{ $fasilitas->id }}/edit">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-secondary rounded-pill px-4 py-1">
                         Edit
                     </button>
                 </a>
             </td>
-            <td>
+            <td class="text-center">
                 <form action="/admin/fasilitas-hotel/{{ $fasilitas->id }}" method="post">
                     @csrf
                     @method('delete')
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-secondary rounded-pill px-4 py-1">
                         Delete
                     </button>
                 </form>
@@ -44,12 +58,4 @@
         @endforeach
     </tbody>
 </table>
-
-
-<a href="{{ route('fasilitas-hotel.create') }}">
-    <button class="btn btn-primary">
-        Tambah Fasilitas Hotel
-    </button>
-</a>
-    
 @endsection

@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="card bg-primary text-white mx-auto" style="width: 50vw" id="form">
+<div class="card bg-secondary text-white mx-auto mb-5 w-75" style="" id="form">
     <div class="card-body">
         <h5 class="card-title">Reservasi</h5>
         <form action="{{ route('reservasi.store') }}" method="post">

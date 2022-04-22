@@ -1,20 +1,32 @@
 @extends('layouts.master')
 
-@section('content')
-<a href="{{ route('admin.home') }}">
-    <button class="btn btn-primary mb-3">
-        Kembali
-    </button>
-</a>
+@section('navbar')
+    @include('layouts.navbar')
+@endsection
 
-<table class="table table-primary">
-    <thead>
+@section('content')
+<div class="d-flex justify-content-between">
+    <a href="{{ route('admin.home') }}">
+        <button class="btn btn-secondary mb-3 rounded-pill px-4 py-1">
+            Kembali
+        </button>
+    </a>
+
+    <a href="{{ route('fasilitas-kamar.create') }}">
+        <button class="btn btn-secondary mb-3 rounded-pill px-4 py-1">
+            Tambah Fasilitas Kamar
+        </button>
+    </a>
+</div>
+
+<table class="table table-secondary">
+    <thead class="table-dark">
         <tr>
             <th>No</th>
             <th>Foto</th>
             <th>Nama Kamar</th>
             <th>Nama Fasilitas</th>
-            <th colspan="2">Aksi</th>
+            <th colspan="2" class="text-center">Aksi</th>
         </tr>
     </thead>
     <tbody>
@@ -26,16 +38,18 @@
             </td>
             <td>{{ $fasilitas->kamar->nama_kamar }}</td>
             <td>{{ $fasilitas->nama_fasilitas }}</td>
-            <td><a href="/admin/fasilitas-kamar/{{ $fasilitas->id }}/edit">
-                <button class="btn btn-primary">
-                    Edit
-                </button>
-            </a></td>
-            <td>
+            <td class="text-center">
+                <a href="/admin/fasilitas-kamar/{{ $fasilitas->id }}/edit">
+                    <button class="btn btn-secondary mb-3 rounded-pill px-4 py-1">
+                        Edit
+                    </button>
+                </a>
+            </td>
+            <td class="text-center">
                 <form action="/admin/fasilitas-kamar/{{ $fasilitas->id }}" method="post">
                     @csrf
                     @method('delete')
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-secondary mb-3 rounded-pill px-4 py-1">
                         Delete
                     </button>
                 </form>
@@ -44,10 +58,4 @@
         @endforeach
     </tbody>
 </table>
-
-<a href="{{ route('fasilitas-kamar.create') }}">
-    <button class="btn btn-primary">
-        Tambah Fasilitas Kamar
-    </button>
-</a>
 @endsection

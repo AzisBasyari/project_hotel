@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-<div class="card bg-primary text-white mx-auto mb-5" style="width: 30vw">
+<div class="card bg-secondary text-white mx-auto mb-5 w-75 print">
     <div class="card-body">
         <h5 class="card-title">Data Reservasi</h5>
         <div class="card-text mb-2">

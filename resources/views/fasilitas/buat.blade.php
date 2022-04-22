@@ -1,13 +1,19 @@
 @extends('layouts.master')
 
-@section('content')
-<a href="{{ route('fasilitas-kamar.index') }}">
-    <button class="btn btn-primary mb-3">
-        Kembali
-    </button>
-</a>
+@section('navbar')
+    @include('layouts.navbar')
+@endsection
 
-<div class="card bg-primary text-white mx-auto" style="width: 30vw">
+@section('content')
+<div class="d-flex justify-content-between">
+    <a href="{{ route('fasilitas-kamar.index') }}">
+        <button class="btn btn-secondary mb-3 rounded-pill px-4 py-1">
+            Kembali
+        </button>
+    </a>
+</div>
+
+<div class="card bg-secondary rounded mb-5 text-white mx-auto w-75">
     <div class="card-body">
         <h5 class="card-title">Tambah Fasilitas Kamar</h5>
         <form action="{{ route('fasilitas-kamar.store') }}" method="post" enctype="multipart/form-data">
@@ -30,11 +36,11 @@
             </div>
             <div class="card-text mb-2">
                 <label for="foto">Foto Fasilitas</label>
-                <img src="#" alt="" id="preview" class="w-100">
+                <img src="#" alt="" id="preview" class="w-100 mb-3">
                 <input class="form-control" type="file" name="foto" id="foto" placeholder="Masukkan foto fasilitas" required>
             </div>
             <div class="card-text d-flex justify-content-end">
-                <button type="submit" class="btn btn-light">Tambah</button>
+                <button type="submit" class="btn btn-light rounded-pill px-4 py-1 mt-3">Tambah</button>
             </div>
         </form>
     </div>

@@ -22,6 +22,9 @@ use App\Http\Controllers\FasilitasKamarController;
 
 Route::get('/', IndexController::class)->name('index');
 
+Route::get('/kamar', [HomeController::class, 'kamar'])->name('kamar');
+Route::get('/fasilitas-hotel', [HomeController::class, 'fasilitas'])->name('fasilitas');
+
 Route::resource('reservasi', ReservasiController::class);
 
 Route::resource('login', LoginController::class)->only(['index', 'store']);
