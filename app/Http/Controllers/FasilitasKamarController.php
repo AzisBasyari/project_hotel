@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kamar;
 use App\Models\FasilitasKamar;
 use App\Http\Requests\StoreFasilitasKamarRequest;
 use App\Http\Requests\UpdateFasilitasKamarRequest;
@@ -15,7 +16,9 @@ class FasilitasKamarController extends Controller
      */
     public function index()
     {
-        //
+        $no = 1;
+        $fasilitasKamars = FasilitasKamar::with('kamar')->get();
+        return view('fasilitas.index', compact(['fasilitasKamars', 'no']));
     }
 
     /**
@@ -25,7 +28,8 @@ class FasilitasKamarController extends Controller
      */
     public function create()
     {
-        //
+        $kamars = Kamar::get(['nama_kamar', 'id']);
+        return view('fasilitas.buat', ['kamars' => $kamars]);
     }
 
     /**
@@ -36,7 +40,23 @@ class FasilitasKamarController extends Controller
      */
     public function store(StoreFasilitasKamarRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+
+        $validatedData['kamar_id'] = $request->kamar_id;
+        
+        $namaFoto = $validatedData['nama_fasilitas'] .'.'. $request->foto->extension();
+        
+        // dd($namaFoto);
+        $validatedData['foto']->move(public_path('img/fasilitas'), $namaFoto);
+        
+        $validatedData['foto'] = $namaFoto;
+        // dd($validatedData);
+
+        if(FasilitasKamar::create($validatedData)){
+            return redirect()->route('fasilitas-kamar.index');
+        } else {
+            return redirect()->back()->with('error', 'Gagal Tambah');
+        }
     }
 
     /**

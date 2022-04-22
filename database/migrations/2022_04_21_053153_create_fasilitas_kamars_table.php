@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('kamar_id');
             $table->foreign('kamar_id')->references('id')->on('kamars')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('nama_fasilitas');
-            $table->string('deskripsi');
+            $table->text('deskripsi');
             $table->string('foto');
             $table->timestamps();
         });

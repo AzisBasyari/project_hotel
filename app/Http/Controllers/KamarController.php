@@ -15,7 +15,9 @@ class KamarController extends Controller
      */
     public function index()
     {
-        //
+        $kamars = Kamar::with('fasilitasKamar')->get();
+        $no = 1;
+        return view('kamar.index', compact(['kamars', 'no']));
     }
 
     /**
@@ -25,7 +27,7 @@ class KamarController extends Controller
      */
     public function create()
     {
-        //
+        return view('kamar.buat');
     }
 
     /**
@@ -36,7 +38,22 @@ class KamarController extends Controller
      */
     public function store(StoreKamarRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        $validatedData['ketersediaan'] = $validatedData['jumlah_kamar'];
+
+        $namaFoto = $validatedData['nama_kamar'] .'.'. $request->foto->extension();
+        
+        // dd($namaFoto);
+        $validatedData['foto']->move(public_path('img/kamar'), $namaFoto);
+
+        $validatedData['foto'] = $namaFoto;
+
+        if(Kamar::create($validatedData)){
+            return redirect()->route('kamar.index');
+        } else {
+            return redirect()->back()->with('error', 'Gagal Tambah');
+        }
+
     }
 
     /**
@@ -81,6 +98,15 @@ class KamarController extends Controller
      */
     public function destroy(Kamar $kamar)
     {
-        //
+        $kamar = Kamar::findOrFail($kamar->id);
+
+        $foto = public_path().'/img/kamar/'.$kamar->foto;
+        unlink($foto);
+        
+        if($kamar->delete()){
+            return redirect()->route('kamar.index');
+        } else {
+            return redirect()->route('kamar.index')->with('error');
+        }
     }
 }

@@ -15,7 +15,9 @@ class FasilitasHotelController extends Controller
      */
     public function index()
     {
-        //
+        $no = 1;
+        $fasilitasHotels = FasilitasHotel::all();
+        return view('hotel.index', compact(['fasilitasHotels', 'no']));
     }
 
     /**
@@ -25,7 +27,7 @@ class FasilitasHotelController extends Controller
      */
     public function create()
     {
-        //
+        return view('hotel.buat');
     }
 
     /**
@@ -36,7 +38,20 @@ class FasilitasHotelController extends Controller
      */
     public function store(StoreFasilitasHotelRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        $namaFoto = $validatedData['nama_fasilitas'] .'.'. $request->foto->extension();
+        
+        // dd($namaFoto);
+        $validatedData['foto']->move(public_path('img/hotel'), $namaFoto);
+        
+        $validatedData['foto'] = $namaFoto;
+        // dd($validatedData);
+
+        if(FasilitasHotel::create($validatedData)){
+            return redirect()->route('fasilitas-hotel.index');
+        } else {
+            return redirect()->back()->with('error', 'Gagal Tambah');
+        }
     }
 
     /**

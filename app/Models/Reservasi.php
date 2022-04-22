@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Kamar;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class FasilitasKamar extends Model
+class Reservasi extends Model
 {
     use HasFactory;
 
@@ -14,7 +15,7 @@ class FasilitasKamar extends Model
     ];
 
     /**
-     * Get the kamar that owns the FasilitasKamar
+     * Get the kamar that owns the Reservasi
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

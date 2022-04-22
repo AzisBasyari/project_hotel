@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -14,7 +15,7 @@ class LoginController extends Controller
      */
     public function index()
     {
-        return view('auth.login')
+        return view('auth.login');
     }
 
     /**
@@ -36,11 +37,20 @@ class LoginController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'username' => 'required',
+            'email' => 'required',
             'password' => 'required'
         ]);
 
         
+        if(Auth::attempt($validatedData)){
+            if(auth()->user()->role === 'admin'){
+                return redirect()->route('admin.home');
+            }elseif (auth()->user()->role === 'resepsionis') {
+                return redirect()->route('resepsionis.home');
+            }
+        }else{
+            return redirect()->back()->with('error', 'login gagal');
+        }
     }
 
     /**
@@ -83,8 +93,14 @@ class LoginController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        Auth::logout();
+ 
+        $request->session()->invalidate();
+ 
+        $request->session()->regenerateToken();
+ 
+        return redirect()->route('login.index');
     }
 }

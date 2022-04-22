@@ -13,7 +13,7 @@ class StoreKamarRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class StoreKamarRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nama_kamar' => 'required|max:255',
+            'jumlah_kamar' => 'required',
+            'harga' => 'required',
+            'deskripsi' => 'required',
+            'foto' => 'required|image|max:2048',
         ];
     }
 }

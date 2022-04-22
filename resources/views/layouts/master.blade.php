@@ -7,12 +7,25 @@
     <title>My Hotel</title>
 
     <link rel="stylesheet" href="{{ asset('css/app.css')}}">
+
+    <style>
+        @media print {
+            .no-print, .no-print *{
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 <body>
     @yield('navbar')
 
-    @yield('content')
+    <section class="container mt-5">
+        @yield('content')
+    </section>
 
     @yield('footer')
+
+    <script src="{{ asset('js/app.js') }}"></script>
+
 </body>
 </html>
