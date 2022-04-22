@@ -98,11 +98,16 @@ class KamarController extends Controller
      */
     public function destroy(Kamar $kamar)
     {
-        $kamar = Kamar::findOrFail($kamar->id);
+        $kamar = Kamar::with('fasilitasKamar')->findOrFail($kamar->id);
 
-        $foto = public_path().'/img/kamar/'.$kamar->foto;
+        $foto = public_path().'/img/kamar/'.$kamar->first()->foto;
         unlink($foto);
-        
+
+        if($kamar->fasilitasKamar->first() !== null){
+            $fotoFasilitas = public_path().'/img/fasilitas/'.$kamar->fasilitasKamar->first()->foto;
+            unlink($fotoFasilitas);
+        }
+
         if($kamar->delete()){
             return redirect()->route('kamar.index');
         } else {
