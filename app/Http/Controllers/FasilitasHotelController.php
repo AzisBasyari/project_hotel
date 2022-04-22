@@ -96,6 +96,15 @@ class FasilitasHotelController extends Controller
      */
     public function destroy(FasilitasHotel $fasilitasHotel)
     {
-        //
+        $fasilitas = FasilitasHotel::findOrFail($fasilitasHotel->id);
+
+        $foto = public_path().'/img/hotel/'.$fasilitas->foto;
+        unlink($foto);
+        
+        if($fasilitas->delete()){
+            return redirect()->route('fasilitas-hotel.index');
+        } else {
+            return redirect()->route('fasilitas-hotel.index')->with('error');
+        }
     }
 }
