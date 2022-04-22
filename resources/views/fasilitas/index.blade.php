@@ -26,7 +26,11 @@
             </td>
             <td>{{ $fasilitas->kamar->nama_kamar }}</td>
             <td>{{ $fasilitas->nama_fasilitas }}</td>
-            <td>Edit</td>
+            <td><a href="/admin/fasilitas-kamar/{{ $fasilitas->id }}/edit">
+                <button class="btn btn-primary">
+                    Edit
+                </button>
+            </a></td>
             <td>
                 <form action="/admin/fasilitas-kamar/{{ $fasilitas->id }}" method="post">
                     @csrf

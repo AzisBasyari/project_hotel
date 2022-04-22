@@ -21,10 +21,16 @@
         <tr>
             <td>{{ $no++ }}</td>
             <td>
-                <img src="{{ asset('img/fasilitas/' . $fasilitas->foto) }}" alt="" width="100px">
+                <img src="{{ asset('img/hotel/' . $fasilitas->foto) }}" alt="" width="100px">
             </td>
             <td>{{ $fasilitas->nama_fasilitas }}</td>
-            <td>Edit</td>
+            <td>
+                <a href="/admin/fasilitas-hotel/{{ $fasilitas->id }}/edit">
+                    <button class="btn btn-primary">
+                        Edit
+                    </button>
+                </a>
+            </td>
             <td>
                 <form action="/admin/fasilitas-hotel/{{ $fasilitas->id }}" method="post">
                     @csrf

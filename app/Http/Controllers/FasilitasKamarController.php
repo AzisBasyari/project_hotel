@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kamar;
 use App\Models\FasilitasKamar;
+use Illuminate\Support\Facades\File;
 use App\Http\Requests\StoreFasilitasKamarRequest;
 use App\Http\Requests\UpdateFasilitasKamarRequest;
 
@@ -78,7 +79,9 @@ class FasilitasKamarController extends Controller
      */
     public function edit(FasilitasKamar $fasilitasKamar)
     {
-        //
+        $fasilitasKamar = FasilitasKamar::with('kamar')->findOrFail($fasilitasKamar->id);
+        $kamars = Kamar::get(['nama_kamar', 'id']);
+        return view('fasilitas.edit', compact(['fasilitasKamar','kamars']));
     }
 
     /**
@@ -90,7 +93,28 @@ class FasilitasKamarController extends Controller
      */
     public function update(UpdateFasilitasKamarRequest $request, FasilitasKamar $fasilitasKamar)
     {
-        //
+        $validatedData = $request->validated();
+
+        $validatedData['kamar_id'] = $request->kamar_id;
+
+        if ($request->hasFile('foto')){
+            $image_path = public_path("/img/fasilitas/".$fasilitasKamar->foto);
+            if (File::exists($image_path)) {
+               unlink($image_path);
+            }
+            $namaFoto = $validatedData['nama_fasilitas'] . $fasilitasKamar->kamar->nama_kamar . '.'. $request->foto->extension();
+            $validatedData['foto']->move(public_path('img/fasilitas/'), $namaFoto);
+
+            $validatedData['foto'] = $namaFoto;
+    
+        }
+
+
+        if(FasilitasKamar::where('id', $fasilitasKamar->id)->update($validatedData)){
+            return redirect(route('fasilitas-kamar.index'))->with('success', 'Fasilitas Berhasil Diedit!');
+        } else {
+            return redirect(route('fasilitas-kamar.index'))->with('error', 'Fasilitas Gagal Diedit!');
+        }
     }
 
     /**
@@ -101,6 +125,15 @@ class FasilitasKamarController extends Controller
      */
     public function destroy(FasilitasKamar $fasilitasKamar)
     {
-        //
+        $fasilitasKamar = FasilitasKamar::findOrFail($fasilitasKamar->id);
+
+        $foto = public_path().'/img/fasilitas/'.$fasilitasKamar->foto;
+        unlink($foto);
+
+        if($fasilitasKamar->delete()){
+            return redirect()->route('fasilitas-kamar.index');
+        } else {
+            return redirect()->route('fasilitas-kamar.index')->with('error');
+        }
     }
 }

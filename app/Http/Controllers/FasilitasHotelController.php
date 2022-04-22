@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FasilitasHotel;
+use Illuminate\Support\Facades\File;
 use App\Http\Requests\StoreFasilitasHotelRequest;
 use App\Http\Requests\UpdateFasilitasHotelRequest;
 
@@ -39,7 +40,7 @@ class FasilitasHotelController extends Controller
     public function store(StoreFasilitasHotelRequest $request)
     {
         $validatedData = $request->validated();
-        $namaFoto = $validatedData['nama_fasilitas'] .'.'. $request->foto->extension();
+        $namaFoto = $validatedData['nama_fasilitas'] . '-hotel' .'.' . $request->foto->extension();
         
         // dd($namaFoto);
         $validatedData['foto']->move(public_path('img/hotel'), $namaFoto);
@@ -73,7 +74,9 @@ class FasilitasHotelController extends Controller
      */
     public function edit(FasilitasHotel $fasilitasHotel)
     {
-        //
+        $fasilitas = FasilitasHotel::findOrFail($fasilitasHotel->id);
+
+        return view('hotel.edit', compact('fasilitas'));
     }
 
     /**
@@ -85,7 +88,27 @@ class FasilitasHotelController extends Controller
      */
     public function update(UpdateFasilitasHotelRequest $request, FasilitasHotel $fasilitasHotel)
     {
-        //
+        $validatedData = $request->validated();
+
+
+        if ($request->hasFile('foto')){
+            $image_path = public_path("/img/hotel/".$fasilitasHotel->foto);
+            if (File::exists($image_path)) {
+               unlink($image_path);
+            }
+            $namaFoto = $validatedData['nama_fasilitas'] . '-hotel' .'.'. $request->foto->extension();
+            $validatedData['foto']->move(public_path('img/hotel/'), $namaFoto);
+
+            $validatedData['foto'] = $namaFoto;
+    
+        }
+
+
+        if(FasilitasHotel::where('id', $fasilitasHotel->id)->update($validatedData)){
+            return redirect(route('fasilitas-hotel.index'))->with('success', 'Fasilitas Berhasil Diedit!');
+        } else {
+            return redirect(route('fasilitas-hotel.index'))->with('error', 'Fasilitas Gagal Diedit!');
+        }
     }
 
     /**
@@ -100,6 +123,8 @@ class FasilitasHotelController extends Controller
 
         $foto = public_path().'/img/hotel/'.$fasilitas->foto;
         unlink($foto);
+
+        // unlink( public_path().'/img/hotel/'. 'Kolam Renang.jpg');
         
         if($fasilitas->delete()){
             return redirect()->route('fasilitas-hotel.index');

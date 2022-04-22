@@ -28,7 +28,11 @@
             <td>{{ $kamar->nama_kamar }}</td>
             <td>{{ $kamar->jumlah_kamar }}</td>
             <td>{{ $kamar->ketersediaan }}</td>
-            <td>Edit</td>
+            <td><a href="/admin/kamar/{{ $kamar->id }}/edit">
+                <button class="btn btn-primary">
+                    Edit
+                </button>
+            </a></td>
             <td>
                 <form action="/admin/kamar/{{ $kamar->id }}" method="post">
                     @csrf

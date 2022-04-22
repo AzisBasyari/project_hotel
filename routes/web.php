@@ -40,4 +40,7 @@ Route::middleware('admin')->group(function () {
 
 Route::middleware('resepsionis')->group(function () {
     Route::get('resepsionis', [HomeController::class, 'resepsionis'])->name('resepsionis.home');
+    Route::get('resepsionis/pending', [HomeController::class, 'pending'])->name('resepsionis.pending');
+    Route::get('resepsionis/checkin', [HomeController::class, 'checkin'])->name('resepsionis.checkin');
+    Route::get('resepsionis/checkout', [HomeController::class, 'checkout'])->name('resepsionis.checkout');
 });

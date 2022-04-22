@@ -26,7 +26,7 @@ class StoreFasilitasKamarRequest extends FormRequest
         return [
             'nama_fasilitas' => 'required|max:255',
             'deskripsi' => 'required',
-            'foto' => 'required|image|max:255'
+            'foto' => 'required|image|max:2048'
         ];
     }
 }

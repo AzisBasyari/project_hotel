@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kamar;
+use Illuminate\Support\Facades\File;
 use App\Http\Requests\StoreKamarRequest;
 use App\Http\Requests\UpdateKamarRequest;
 
@@ -75,7 +76,9 @@ class KamarController extends Controller
      */
     public function edit(Kamar $kamar)
     {
-        //
+        $kamar = Kamar::with('fasilitasKamar')->findOrFail($kamar->id);
+
+        return view('kamar.edit', compact('kamar'));
     }
 
     /**
@@ -87,7 +90,27 @@ class KamarController extends Controller
      */
     public function update(UpdateKamarRequest $request, Kamar $kamar)
     {
-        //
+        $validatedData = $request->validated();
+
+        if ($request->hasFile('foto')){
+            $image_path = public_path("/img/kamar/".$kamar->foto);
+            if (File::exists($image_path)) {
+               unlink($image_path);
+            }
+            $namaFoto = $validatedData['nama_kamar'] .'.'. $request->foto->extension();
+            $validatedData['foto']->move(public_path('img/kamar'), $namaFoto);
+
+            $validatedData['foto'] = $namaFoto;
+    
+        }
+
+
+        if(Kamar::where('id', $kamar->id)->update($validatedData)){
+            return redirect(route('kamar.index'))->with('success', 'Kamar Berhasil Diedit!');
+        } else {
+            return redirect(route('kamar.index'))->with('error', 'Kamar Gagal Diedit!');
+        }
+        
     }
 
     /**
@@ -100,7 +123,7 @@ class KamarController extends Controller
     {
         $kamar = Kamar::with('fasilitasKamar')->findOrFail($kamar->id);
 
-        $foto = public_path().'/img/kamar/'.$kamar->first()->foto;
+        $foto = public_path().'/img/kamar/'.$kamar->foto;
         unlink($foto);
 
         if($kamar->fasilitasKamar->first() !== null){

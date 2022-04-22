@@ -13,7 +13,7 @@ class UpdateFasilitasHotelRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class UpdateFasilitasHotelRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nama_fasilitas' => 'required|max:255',
+            'deskripsi' => 'required',
+            'foto' => 'required|image|max:2048'
         ];
     }
 }

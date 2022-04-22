@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('check_out');
             $table->integer('jumlah_kamar');
             $table->integer('total_harga');
+            $table->enum('status', ['pending', 'checkin','checkout'])->default('pending');
             $table->timestamps();
         });
     }

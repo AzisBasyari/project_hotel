@@ -69,7 +69,7 @@ class ReservasiController extends Controller
      */
     public function edit(Reservasi $reservasi)
     {
-        //
+        
     }
 
     /**
@@ -81,7 +81,15 @@ class ReservasiController extends Controller
      */
     public function update(UpdateReservasiRequest $request, Reservasi $reservasi)
     {
-        //
+        $reservasi = Reservasi::findOrFail($reservasi->id);
+
+        $reservasi->status = $request->status;
+
+        if($reservasi->save()){
+            return redirect()->route('resepsionis.pending');
+        } else {
+            return redirect()->back()->with('error');
+        }
     }
 
     /**
@@ -95,7 +103,7 @@ class ReservasiController extends Controller
         $reservasi = Reservasi::findOrFail($reservasi->id);
 
         if($reservasi->delete()){
-            return redirect()->route('resepsionis.home');
+            return redirect()->route('resepsionis.checkout');
         } else {
             return redirect()->back()->with('error', 'hapus gagal');
         }
